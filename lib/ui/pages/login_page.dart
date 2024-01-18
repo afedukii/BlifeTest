@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:blife_test/API%20Services/RandomUser/RandomUser.dart';
+import 'package:blife_test/SharedPreferences/SharedPreferencesHelper.dart';
 import 'package:blife_test/models/user.dart';
 import 'package:blife_test/ui/components/MainButton.dart';
 import 'package:blife_test/ui/components/TextInputForm.dart';
@@ -10,6 +11,8 @@ import 'package:blife_test/utils/Strings/Alerts.dart';
 import 'package:blife_test/utils/Strings/Buttons.dart';
 import 'package:blife_test/utils/Strings/TextInputs.dart';
 import 'package:blife_test/utils/Strings/Titles.dart';
+import 'package:blife_test/utils/navigator.dart';
+import 'package:blife_test/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -26,6 +29,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   User user = User();
   RandomUser temp_user = RandomUser();
+  SharedPreferencesHelper shadPrefs = SharedPreferencesHelper();
 
   String lblUname = "test";
   String lblPass = "test";
@@ -107,25 +111,31 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> _getTempUser() async {
+    shadPrefs.SharedPrefsInit();
     await temp_user.genRandomUser();
     setState(() {
       user.name = temp_user.name;
       user.username = temp_user.username;
       user.password = temp_user.password;
       user.phone = temp_user.phone;
-      user.picture = temp_user.picture;
     });
   }
 
-  void _validateCred(){
+  void _validateCred() async {
     if(_unameCtrl.text.isEmpty || _passCtrl.text.isEmpty){
       //toast err: empty fieds
       ToastAlert().showToastAlert(EmptyFieldsErr,false);
     }else{
       if(_unameCtrl.text == user.username && _passCtrl.text == user.password){
-        //sned to profile
+        //toast user founded
+        ToastAlert().showToastAlert(UserFoundAlert,true);
         //save data on local storage
-        
+        shadPrefs.saveData('name', user.name);
+        shadPrefs.saveData('username', user.username);
+        shadPrefs.saveData('password', user.password);
+        shadPrefs.saveData('phone', user.phone);
+        //change to profile screen
+        nextScreen(context,profile_route);
       }else{
         //toast wrong data
         ToastAlert().showToastAlert(UserNotFoundErr,false);
