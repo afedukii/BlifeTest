@@ -11,5 +11,6 @@ class RandomUser {
     var response = await http.get(Uri.parse('https://randomuser.me/api/?inc=name.title,login,picture,phone'));
     var convert = jsonDecode(response.body);
     print(response.body);
+    //obtener con movimiento de json [tag padre][tag hijo][tag nieto]
   }
 }
