@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ShoppingCart{
   SharedPreferencesHelper shadPrefs;
   List<String> cart = [];
-  List<List<String>> actualCart = [[]];
+  List<List<String>> actualCarts = [[]];
 
   ShoppingCart({
     required this.shadPrefs,
@@ -13,6 +13,7 @@ class ShoppingCart{
 
   void saveCart(products, prodIndex,prodcount) async{
     var actualCart = await shadPrefs.getDataList('cart');
+    print(actualCart.runtimeType);
     if(actualCart != null){
       var tempItem = [
         products[prodIndex].name,
@@ -43,16 +44,17 @@ class ShoppingCart{
       }
       tempRes.add(tempItem);
     }
-    actualCart = tempRes;
+    actualCarts = tempRes;
+    print(actualCarts.length);
    }else{
-    actualCart = [[]];
+    actualCarts = [[]];
    }
   }
 
   double getTotal (){
     double total = 0;
-    if(actualCart[0].isNotEmpty){
-      for(var item in actualCart){
+    if(actualCarts[0].isNotEmpty){
+      for(var item in actualCarts){
         total += double.parse(item[1]);
       }
       return total;
@@ -63,5 +65,22 @@ class ShoppingCart{
 
   void voidCart(){
     shadPrefs.delData('cart');
+  }
+
+  void dismissItem (index) async {
+    print(actualCarts);
+    actualCarts.removeAt(index);
+    shadPrefs.saveDataList('cart', actualCarts);
+    var temp = await shadPrefs.getDataList("cart");
+    print(temp);
+    // if(actualCart.length == 1){
+    //   actualCart = [[]];
+    //   voidCart();
+    // }else{
+    //   actualCart.removeAt(index);
+    //   print(actualCart);
+    //   shadPrefs.saveDataList('cart', actualCart);
+    //   print(await shadPrefs.getDataList('cart'));
+    // }
   }
 }
