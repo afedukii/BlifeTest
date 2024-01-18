@@ -17,21 +17,21 @@ class SlidableCard extends StatelessWidget{
   Widget build(BuildContext context){
     return Slidable(
       
-      // endActionPane: ActionPane(
-      //   motion: const ScrollMotion(),
-      //   children: [
-      //     SlidableAction(
-      //       flex: 1,
-      //       onPressed:(context) {
-      //         onDelete();
-      //       },
-      //       backgroundColor: Colors.red,
-      //       foregroundColor: Colors.white,
-      //       icon: Icons.delete,
-      //       label: 'Eliminar',
-      //     ),
-      //   ],
-      // ),
+      endActionPane: ActionPane(
+        motion: const ScrollMotion(),
+        children: [
+          SlidableAction(
+            flex: 1,
+            onPressed:(context) {
+              onDelete();
+            },
+            backgroundColor: Colors.red,
+            foregroundColor: Colors.white,
+            icon: Icons.delete,
+            label: 'Eliminar',
+          ),
+        ],
+      ),
       child: Container(
         height: 100,
         width: MediaQuery.of(context).size.width,

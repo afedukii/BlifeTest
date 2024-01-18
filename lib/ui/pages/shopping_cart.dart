@@ -37,7 +37,6 @@ class _ShopCartPageState extends State<ShopCartPage> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            
             showDialog<String>(
               context: context,
               builder: (BuildContext context) => AlertDialog(
@@ -82,20 +81,20 @@ class _ShopCartPageState extends State<ShopCartPage> {
                   itemBuilder: (context, index) {
                     return SlidableCard(item: shopCart!.actualCarts[index], index: index, 
                     onDelete: (){setState(()  {
+
                       // shopCart!.dismissItem(index);
                       // _getData();
-                      // print(shopCart!.actualCarts);
-                      // print(shopCart!.actualCarts.length);
-                      // if(shopCart!.actualCarts.length == 1){
-                      //   shopCart!.actualCarts = [[]];
-                      //   shopCart!.voidCart();
-                      // }else{
-                      //   shopCart!.actualCarts.removeAt(index);
-                      // }
-                      // print(shopCart!.actualCarts);
-                      // print(shopCart!.actualCarts.length);
-                      // shadPrefs.saveDataList('cart', shopCart!.actualCarts[0]);
-                      // _getData();
+                      if(shopCart!.actualCarts.length == 1){
+                        shopCart!.actualCarts = [[]];
+                        shopCart!.voidCart();
+                      }else{
+                        shopCart!.actualCarts.removeAt(index);
+                      }
+                      if(shopCart!.actualCarts[0].isNotEmpty){
+                        shadPrefs.saveDataList('cart', shopCart!.getList());
+                      }
+                      // shadPrefs.saveDataList('cart', shopCart!.getList());
+                      _getData();
                     });});
                   },
                 ),

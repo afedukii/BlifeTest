@@ -13,7 +13,7 @@ class ShoppingCart{
 
   void saveCart(products, prodIndex,prodcount) async{
     var actualCart = await shadPrefs.getDataList('cart');
-    print(actualCart.runtimeType);
+    print(actualCart);
     if(actualCart != null){
       var tempItem = [
         products[prodIndex].name,
@@ -67,20 +67,13 @@ class ShoppingCart{
     shadPrefs.delData('cart');
   }
 
-  void dismissItem (index) async {
-    print(actualCarts);
-    actualCarts.removeAt(index);
-    shadPrefs.saveDataList('cart', actualCarts);
-    var temp = await shadPrefs.getDataList("cart");
-    print(temp);
-    // if(actualCart.length == 1){
-    //   actualCart = [[]];
-    //   voidCart();
-    // }else{
-    //   actualCart.removeAt(index);
-    //   print(actualCart);
-    //   shadPrefs.saveDataList('cart', actualCart);
-    //   print(await shadPrefs.getDataList('cart'));
-    // }
+
+  List<String> getList(){
+    List<String> temp = [];
+    print(actualCarts[0]);
+    for(var item in actualCarts){
+      temp.add('${item[0]};${item[1]};${item[2]}');
+    }
+    return temp;
   }
 }
