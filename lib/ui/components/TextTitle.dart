@@ -18,6 +18,7 @@ class TextTitle extends StatelessWidget {
   Widget build(BuildContext context){
     return Text(
       title!,
+      overflow: TextOverflow.ellipsis,
       style: TextStyle(
         color: color,
         fontSize: fontSize,

@@ -22,6 +22,6 @@ class SharedPreferencesHelper{
   }
 
   void delData(key) async{
-    await prefs.remove('counter');
+    await prefs.remove(key);
   }
 }

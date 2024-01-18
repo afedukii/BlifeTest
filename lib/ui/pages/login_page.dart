@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:blife_test/API%20Services/RandomUser/RandomUser.dart';
+import 'package:blife_test/APInServices/RandomUser/RandomUser.dart';
 import 'package:blife_test/SharedPreferences/SharedPreferencesHelper.dart';
 import 'package:blife_test/models/user.dart';
 import 'package:blife_test/ui/components/MainButton.dart';
