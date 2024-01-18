@@ -1,0 +1,1 @@
+const AppNameTitle = "Blife Test App";
