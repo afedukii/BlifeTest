@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:blife_test/APInServices/FakeStore/FakeStore.dart';
 import 'package:blife_test/APInServices/ShoppingCart/shopcart.dart';
 import 'package:blife_test/SharedPreferences/SharedPreferencesHelper.dart';
@@ -12,6 +10,10 @@ import 'package:blife_test/ui/components/ProductCard.dart';
 import 'package:blife_test/ui/components/ProductPicture.dart';
 import 'package:blife_test/ui/components/TextTitle.dart';
 import 'package:blife_test/ui/components/ToastAlert.dart';
+import 'package:blife_test/utils/Strings/Alerts.dart';
+import 'package:blife_test/utils/Strings/Labels.dart';
+import 'package:blife_test/utils/Strings/LocalKeys.dart';
+import 'package:blife_test/utils/colors.dart';
 import 'package:blife_test/utils/navigator.dart';
 import 'package:blife_test/utils/routes.dart';
 import 'package:flutter/material.dart';
@@ -49,8 +51,8 @@ class _ProfilePageState extends State<ProfilePage> {
     return Material(
       child: Scaffold(
         appBar: AppBar(
-          title: TextTitle(title: "Hola! ${user.name}", fontSize: 18.0, fontWeight: FontWeight.bold,color: Colors.white,),
-          backgroundColor: Colors.deepPurple,
+          title: TextTitle(title: "$GreetingLabel ${user.name}", fontSize: 18.0, fontWeight: FontWeight.bold,color: WhiteColor,),
+          backgroundColor: DeepPurpleColor,
           actions: [
             IconButton(
               icon: const Icon(Icons.shopping_cart),
@@ -60,16 +62,16 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ],
           iconTheme: const IconThemeData(
-            color: Colors.white,
+            color: WhiteColor,
           ),
         ),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 15,),
-            TextTitle(title: " Teléfono: ${user.phone}", fontSize: 16.0, fontWeight: FontWeight.bold),
+            TextTitle(title: " $PhoneLabel ${user.phone}", fontSize: 16.0, fontWeight: FontWeight.bold),
             const SizedBox(height: 20,),
-            const TextTitle(title: " Categorias", fontSize: 16.0, fontWeight: FontWeight.bold),
+            const TextTitle(title: CategoriesLabel, fontSize: 16.0, fontWeight: FontWeight.bold),
             const SizedBox(height: 10,),
             Container(
               width: MediaQuery.of(context).size.width,
@@ -80,15 +82,15 @@ class _ProfilePageState extends State<ProfilePage> {
                 itemCount: categories.length,
                 itemBuilder: (context, index) {
                   return CategoryCard(
-                    text: TextTitle(title: categories[index].name, fontSize: 16.0, fontWeight: FontWeight.bold, color: Colors.white),
+                    text: TextTitle(title: categories[index].name, fontSize: 16.0, fontWeight: FontWeight.bold, color: WhiteColor),
                     onTap: () => changeCategory(index),
-                    bg: Colors.deepPurple,
+                    bg: DeepPurpleColor,
                   );
                 },
               )
             ),
             const SizedBox(height: 20,),
-            const TextTitle(title: " Productos", fontSize: 16.0, fontWeight: FontWeight.bold),
+            const TextTitle(title: ProductsLabel, fontSize: 16.0, fontWeight: FontWeight.bold),
             const SizedBox(height: 10,),
             Container(
               width: MediaQuery.of(context).size.width,
@@ -99,10 +101,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 itemCount: products.isEmpty ? 1 : products.length,
                 carouselController: prodSlideCtrl,
                 itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) =>
-                  products.isEmpty ? const Text("Vacio")
+                  products.isEmpty ? const Text(VoidLabel)
                   : ProductCard(
-                    textName: TextTitle(title: products[itemIndex].name, fontSize: 16.0, fontWeight: FontWeight.normal, color: Colors.white,),
-                    textPrice: TextTitle(title: "Precio: \$${products[itemIndex].price}", fontSize: 16.0, fontWeight: FontWeight.normal, color: Colors.white,),
+                    textName: TextTitle(title: products[itemIndex].name, fontSize: 16.0, fontWeight: FontWeight.normal, color: WhiteColor,),
+                    textPrice: TextTitle(title: "$PriceLabel \$${products[itemIndex].price}", fontSize: 16.0, fontWeight: FontWeight.normal, color: WhiteColor,),
                     image: ProductPicture(image: NetworkImage(products[itemIndex].picture))
                   ),
                 options: CarouselOptions(
@@ -126,29 +128,29 @@ class _ProfilePageState extends State<ProfilePage> {
                   Flexible(
                     flex: 1,
                     child: MainButton(
-                      text: const TextTitle(title: "-", fontSize: 22.0, fontWeight: FontWeight.bold, color: Colors.white,), 
-                      onTap: _minusProd, width: 100, height: 50, bg: Colors.black,
+                      text: const TextTitle(title: "-", fontSize: 22.0, fontWeight: FontWeight.bold, color: WhiteColor,), 
+                      onTap: _minusProd, width: 100, height: 50, bg: BlackColor,
                     ),
                   ),
                   Flexible(
                     flex: 3,
                     child: MainButton(
-                      text: TextTitle(title: "Añadir $prodCount", fontSize: 14.0, fontWeight: FontWeight.bold, color: Colors.white,),
-                      onTap: _addToCart, width: 100, height: 50, bg: Colors.blueAccent,
+                      text: TextTitle(title: "$AddLabel $prodCount", fontSize: 14.0, fontWeight: FontWeight.bold, color: WhiteColor),
+                      onTap: _addToCart, width: 100, height: 50, bg: blueAccentColor,
                     ),
                   ),
                   Flexible(
                     flex: 1,
                     child: MainButton(
-                      text: const TextTitle(title: "+", fontSize: 22.0, fontWeight: FontWeight.bold, color: Colors.white,), 
-                      onTap: _plusProd, width: 100, height: 50, bg: Colors.black,
+                      text: const TextTitle(title: "+", fontSize: 22.0, fontWeight: FontWeight.bold, color: WhiteColor,), 
+                      onTap: _plusProd, width: 100, height: 50, bg: BlackColor,
                     ),
                   )
                 ],
               )
             ),
             const SizedBox(height: 10,),
-            TextTitle(title: "Sub Total: ${prodCount * double.parse( products.isEmpty ? "0" : products[prodIndex].price)}", fontSize: 16.0, fontWeight: FontWeight.bold),
+            TextTitle(title: "$SubTotalLabel ${prodCount * double.parse( products.isEmpty ? "0" : products[prodIndex].price)}", fontSize: 16.0, fontWeight: FontWeight.bold),
           ],
         ),
       )
@@ -158,10 +160,10 @@ class _ProfilePageState extends State<ProfilePage> {
   void _getUserData() async{
     await shadPrefs.SharedPrefsInit();
     
-    user.name = (await shadPrefs.getData('name'))!;
-    user.username = (await shadPrefs.getData('username'))!;
-    user.password = (await shadPrefs.getData('password'))!;
-    user.phone = (await shadPrefs.getData('phone'))!;
+    user.name = (await shadPrefs.getData(LocalNameKey))!;
+    user.username = (await shadPrefs.getData(LocalUsernameKey))!;
+    user.password = (await shadPrefs.getData(LocalPasswordKey))!;
+    user.phone = (await shadPrefs.getData(LocalPhoneKey))!;
 
     categories = await fakeStore.getCategories();
     products = await fakeStore.getProducts(categories[0].name);
@@ -188,7 +190,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   void _minusProd(){
     if(prodCount == 1){
-      ToastAlert().showToastAlert("Minimo un producto", false);
+      ToastAlert().showToastAlert(MinProductAlert, false);
     }else{
       setState(() {
         prodCount--;

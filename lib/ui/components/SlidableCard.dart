@@ -1,5 +1,7 @@
-import 'package:blife_test/APInServices/ShoppingCart/shopcart.dart';
 import 'package:blife_test/ui/components/TextTitle.dart';
+import 'package:blife_test/utils/Strings/Buttons.dart';
+import 'package:blife_test/utils/Strings/Labels.dart';
+import 'package:blife_test/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
@@ -16,7 +18,6 @@ class SlidableCard extends StatelessWidget{
   @override
   Widget build(BuildContext context){
     return Slidable(
-      
       endActionPane: ActionPane(
         motion: const ScrollMotion(),
         children: [
@@ -25,10 +26,10 @@ class SlidableCard extends StatelessWidget{
             onPressed:(context) {
               onDelete();
             },
-            backgroundColor: Colors.red,
-            foregroundColor: Colors.white,
+            backgroundColor: RedColor,
+            foregroundColor: WhiteColor,
             icon: Icons.delete,
-            label: 'Eliminar',
+            label: DeleteLabel,
           ),
         ],
       ),
@@ -36,7 +37,7 @@ class SlidableCard extends StatelessWidget{
         height: 100,
         width: MediaQuery.of(context).size.width,
         decoration: const BoxDecoration(
-          border: Border(bottom: BorderSide(width: 1, color: Colors.black))
+          border: Border(bottom: BorderSide(width: 1, color: BlackColor))
         ),
         child: Row(
           children: [
@@ -56,12 +57,12 @@ class SlidableCard extends StatelessWidget{
                   child: Container(
                     height: 10,
                     width: MediaQuery.of(context).size.width*.7,
-                    padding: EdgeInsets.only(right: 13.0),
+                    padding: const EdgeInsets.only(right: 13.0),
                     alignment: Alignment.centerLeft,
-                    child: TextTitle(title: "${item[0]}", fontSize: 12.0, fontWeight: FontWeight.normal),
+                    child: TextTitle(title: item[0], fontSize: 12.0, fontWeight: FontWeight.normal),
                   ),
                 ),
-                TextTitle(title: "Sub total: \$${item[1]}", fontSize: 12.0, fontWeight: FontWeight.normal)
+                TextTitle(title: "$SubTotalLabel \$${item[1]}", fontSize: 12.0, fontWeight: FontWeight.normal)
               ],
             )
           ],

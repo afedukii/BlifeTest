@@ -2,6 +2,11 @@ import 'package:blife_test/APInServices/ShoppingCart/shopcart.dart';
 import 'package:blife_test/SharedPreferences/SharedPreferencesHelper.dart';
 import 'package:blife_test/ui/components/SlidableCard.dart';
 import 'package:blife_test/ui/components/TextTitle.dart';
+import 'package:blife_test/utils/Strings/Buttons.dart';
+import 'package:blife_test/utils/Strings/Labels.dart';
+import 'package:blife_test/utils/Strings/LocalKeys.dart';
+import 'package:blife_test/utils/Strings/Titles.dart';
+import 'package:blife_test/utils/colors.dart';
 import 'package:blife_test/utils/navigator.dart';
 import 'package:blife_test/utils/routes.dart';
 import 'package:flutter/material.dart';
@@ -29,10 +34,10 @@ class _ShopCartPageState extends State<ShopCartPage> {
     return Material(
       child: Scaffold(
         appBar: AppBar(
-          title: const TextTitle(title: "Carrito", fontSize: 18.0, fontWeight: FontWeight.bold,color: Colors.white,),
-          backgroundColor: Colors.deepPurple,
+          title: const TextTitle(title: ShopCartTitle, fontSize: 18.0, fontWeight: FontWeight.bold,color: WhiteColor,),
+          backgroundColor: DeepPurpleColor,
           iconTheme: const IconThemeData(
-            color: Colors.white,
+            color: WhiteColor,
           ),
         ),
         floatingActionButton: FloatingActionButton(
@@ -40,8 +45,8 @@ class _ShopCartPageState extends State<ShopCartPage> {
             showDialog<String>(
               context: context,
               builder: (BuildContext context) => AlertDialog(
-                title: Text(shopCart != null && shopCart!.actualCarts[0].isNotEmpty ? 'Pedido realizado' : 'Tu carrito esta vacío'),
-                content: Text(shopCart != null && shopCart!.actualCarts[0].isNotEmpty ? 'Su compra ha finalizado, espere prontas noticias sobre su pedido.' : 'Agregue productos para poder realizar su compra'),
+                title: Text(shopCart != null && shopCart!.actualCarts[0].isNotEmpty ? OrderPlacedTitle : VoidShopCartTitle),
+                content: Text(shopCart != null && shopCart!.actualCarts[0].isNotEmpty ? PurchaseCompleteLabel : AddProductsLabel),
                 actions: <Widget>[
                   TextButton(
                     onPressed: () {
@@ -49,14 +54,14 @@ class _ShopCartPageState extends State<ShopCartPage> {
                         shopCart!.voidCart();
                       }
                       nextScreen(context, profile_route);},
-                    child: const Text('Regresar al inicio'),
+                    child: const Text(BackHomeLabel),
                   ),
                 ],
               ),
             );
           },
-          foregroundColor: Colors.white,
-          backgroundColor: Colors.deepPurple,
+          foregroundColor: WhiteColor,
+          backgroundColor: DeepPurpleColor,
           child: const Icon(Icons.shopping_cart_checkout),
         ),
         body: Container(
@@ -68,12 +73,12 @@ class _ShopCartPageState extends State<ShopCartPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  TextTitle(title: "Productos: ${shopCart != null ? shopCart!.actualCarts[0].isNotEmpty ? shopCart!.actualCarts.length : 0 :0}", fontSize: 16.0, fontWeight: FontWeight.bold),
-                  TextTitle(title: "Total: \$${shopCart != null ? shopCart!.getTotal() : 0.0}", fontSize: 16.0, fontWeight: FontWeight.bold),
+                  TextTitle(title: "$ProductsLabel ${shopCart != null ? shopCart!.actualCarts[0].isNotEmpty ? shopCart!.actualCarts.length : 0 :0}", fontSize: 16.0, fontWeight: FontWeight.bold),
+                  TextTitle(title: "$TotalLabel \$${shopCart != null ? shopCart!.getTotal() : 0.0}", fontSize: 16.0, fontWeight: FontWeight.bold),
                 ],
               ),
               const SizedBox(height: 10,),
-              TextTitle(title:shopCart != null && shopCart!.actualCarts[0].isNotEmpty ? "Desliza para eliminar del carrito" : 'Tu carrito esta vacío' , fontSize: 12.0, fontWeight: FontWeight.normal),
+              TextTitle(title:shopCart != null && shopCart!.actualCarts[0].isNotEmpty ? SlideInstructionLabel : VoidShopCartTitle , fontSize: 12.0, fontWeight: FontWeight.normal),
               const SizedBox(height: 10,),
               Expanded(
                 child: ListView.builder(
@@ -81,9 +86,6 @@ class _ShopCartPageState extends State<ShopCartPage> {
                   itemBuilder: (context, index) {
                     return SlidableCard(item: shopCart!.actualCarts[index], index: index, 
                     onDelete: (){setState(()  {
-
-                      // shopCart!.dismissItem(index);
-                      // _getData();
                       if(shopCart!.actualCarts.length == 1){
                         shopCart!.actualCarts = [[]];
                         shopCart!.voidCart();
@@ -91,9 +93,8 @@ class _ShopCartPageState extends State<ShopCartPage> {
                         shopCart!.actualCarts.removeAt(index);
                       }
                       if(shopCart!.actualCarts[0].isNotEmpty){
-                        shadPrefs.saveDataList('cart', shopCart!.getList());
+                        shadPrefs.saveDataList(LocalCartKey, shopCart!.getList());
                       }
-                      // shadPrefs.saveDataList('cart', shopCart!.getList());
                       _getData();
                     });});
                   },
@@ -111,11 +112,9 @@ class _ShopCartPageState extends State<ShopCartPage> {
     setState(() {
       shopCart = ShoppingCart(shadPrefs: shadPrefs);
     });
-    
     _getData();
   }
   Future<void> _getData () async {
     await shopCart!.getCart();
-    
   }
 }

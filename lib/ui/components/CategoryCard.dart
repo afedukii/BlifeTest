@@ -1,4 +1,5 @@
 import 'package:blife_test/ui/components/TextTitle.dart';
+import 'package:blife_test/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class CategoryCard extends StatelessWidget{
@@ -23,7 +24,7 @@ class CategoryCard extends StatelessWidget{
       alignment: Alignment.center,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: Colors.deepPurple,
+        color: DeepPurpleColor,
       ),
       child: text,
     )

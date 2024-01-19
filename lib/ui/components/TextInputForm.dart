@@ -27,19 +27,8 @@ class TextInputForm extends StatelessWidget {
         obscureText: passwordTextStatus,
         decoration: InputDecoration(
           hintText: hintText,
-          // suffixIcon: _getIcon(),
-          
         ),
       ),
     );
   }
-
-  // Icon? _getIcon() {
-  //   if (inputType == TextInputType.emailAddress) {
-  //     return Icons.email;
-  //   } else if (inputType == TextInputType.visiblePassword) {
-  //     return getIcon(AppIcons.password);
-  //   }
-  //   return null;
-  // }
 }

@@ -1,6 +1,7 @@
 import 'package:blife_test/SharedPreferences/SharedPreferencesHelper.dart';
 import 'package:blife_test/ui/components/ToastAlert.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:blife_test/utils/Strings/Alerts.dart';
+import 'package:blife_test/utils/Strings/LocalKeys.dart';
 
 class ShoppingCart{
   SharedPreferencesHelper shadPrefs;
@@ -12,31 +13,24 @@ class ShoppingCart{
   });
 
   void saveCart(products, prodIndex,prodcount) async{
-    var actualCart = await shadPrefs.getDataList('cart');
-    print(actualCart);
+    var actualCart = await shadPrefs.getDataList(LocalCartKey);
     if(actualCart != null){
-      var tempItem = [
-        products[prodIndex].name,
-        '${prodcount * double.parse(products[prodIndex].price)}',
-        products[prodIndex].picture
-      ];
-
       actualCart.add('${products[prodIndex].name};${prodcount * double.parse(products[prodIndex].price)};${products[prodIndex].picture}');
-      shadPrefs.saveDataList('cart', actualCart);
+      shadPrefs.saveDataList(LocalCartKey, actualCart);
     }else{
       List<String> temp = [];
       temp.add('${products[prodIndex].name};${prodcount * double.parse(products[prodIndex].price)};${products[prodIndex].picture}');
-      shadPrefs.saveDataList('cart', temp);
+      shadPrefs.saveDataList(LocalCartKey, temp);
     }
-    ToastAlert().showToastAlert("Producto agregado al carrito", true);
+    ToastAlert().showToastAlert(ProdAddedToCartAlert, true);
   }
 
   Future<void> getCart () async{
-   var data = await shadPrefs.getDataList('cart');
+   var data = await shadPrefs.getDataList(LocalCartKey);
    if(data != null){
     List<List<String>> tempRes = [[]];
     tempRes.clear();
-    for(var item in data!){
+    for(var item in data){
       var splitted = item.split(';');
       List<String> tempItem = [];
       for(var i in splitted){
@@ -45,7 +39,6 @@ class ShoppingCart{
       tempRes.add(tempItem);
     }
     actualCarts = tempRes;
-    print(actualCarts.length);
    }else{
     actualCarts = [[]];
    }
@@ -64,13 +57,12 @@ class ShoppingCart{
   }
 
   void voidCart(){
-    shadPrefs.delData('cart');
+    shadPrefs.delData(LocalCartKey);
   }
 
 
   List<String> getList(){
     List<String> temp = [];
-    print(actualCarts[0]);
     for(var item in actualCarts){
       temp.add('${item[0]};${item[1]};${item[2]}');
     }

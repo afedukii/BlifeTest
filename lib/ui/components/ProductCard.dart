@@ -1,5 +1,6 @@
 import 'package:blife_test/ui/components/ProductPicture.dart';
 import 'package:blife_test/ui/components/TextTitle.dart';
+import 'package:blife_test/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class ProductCard extends StatelessWidget{
@@ -22,7 +23,7 @@ class ProductCard extends StatelessWidget{
       decoration: const BoxDecoration(
         boxShadow: [
           BoxShadow(
-            color: Colors.blueGrey,
+            color: BlueGreyColor,
             offset: Offset(
               5.0,
               0.0,
@@ -44,7 +45,7 @@ class ProductCard extends StatelessWidget{
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               textName,
-              SizedBox(height: 20,),
+              const SizedBox(height: 20,),
               textPrice
             ],
           )

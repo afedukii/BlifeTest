@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:blife_test/APInServices/RandomUser/RandomUser.dart';
 import 'package:blife_test/SharedPreferences/SharedPreferencesHelper.dart';
 import 'package:blife_test/models/user.dart';
@@ -9,16 +7,14 @@ import 'package:blife_test/ui/components/TextTitle.dart';
 import 'package:blife_test/ui/components/ToastAlert.dart';
 import 'package:blife_test/utils/Strings/Alerts.dart';
 import 'package:blife_test/utils/Strings/Buttons.dart';
+import 'package:blife_test/utils/Strings/LocalKeys.dart';
 import 'package:blife_test/utils/Strings/TextInputs.dart';
 import 'package:blife_test/utils/Strings/Titles.dart';
+import 'package:blife_test/utils/colors.dart';
 import 'package:blife_test/utils/navigator.dart';
 import 'package:blife_test/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-
-import 'package:http/http.dart' as http;
-import 'package:indexed/indexed.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -30,9 +26,6 @@ class _LoginPageState extends State<LoginPage> {
   User user = User();
   RandomUser temp_user = RandomUser();
   SharedPreferencesHelper shadPrefs = SharedPreferencesHelper();
-
-  String lblUname = "test";
-  String lblPass = "test";
 
   final _unameCtrl = TextEditingController();
   final _passCtrl = TextEditingController();
@@ -46,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(context){
     return Material(
-      child: Container(
+      child: SizedBox(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
       child: Column(
@@ -84,7 +77,7 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const TextTitle(title: AppNameTitle,color: Colors.deepPurple, fontSize: 25.0, fontWeight: FontWeight.bold),
+                const TextTitle(title: AppNameTitle,color: DeepPurpleColor, fontSize: 25.0, fontWeight: FontWeight.bold),
                 TextInputForm(controller: _unameCtrl, inputType: TextInputType.emailAddress, hintText: UnameInputText,),
                 TextInputForm(controller: _passCtrl, inputType: TextInputType.visiblePassword, hintText: PassInputText,),
               ],
@@ -93,11 +86,11 @@ class _LoginPageState extends State<LoginPage> {
           Flexible(
             flex: 1,
             child: MainButton(
-              text: const TextTitle(title: SignInLabel, fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.white,),
+              text: const TextTitle(title: SignInLabel, fontSize: 20.0, fontWeight: FontWeight.bold, color: WhiteColor,),
               onTap: _validateCred,
               width: 200,
               height: 60,
-              bg: Colors.deepPurple,
+              bg: DeepPurpleColor,
             ),
           ),
           Flexible(
@@ -130,10 +123,10 @@ class _LoginPageState extends State<LoginPage> {
         //toast user founded
         ToastAlert().showToastAlert(UserFoundAlert,true);
         //save data on local storage
-        shadPrefs.saveData('name', user.name);
-        shadPrefs.saveData('username', user.username);
-        shadPrefs.saveData('password', user.password);
-        shadPrefs.saveData('phone', user.phone);
+        shadPrefs.saveData(LocalNameKey, user.name);
+        shadPrefs.saveData(LocalUsernameKey, user.username);
+        shadPrefs.saveData(LocalPasswordKey, user.password);
+        shadPrefs.saveData(LocalPhoneKey, user.phone);
         //change to profile screen
         nextScreen(context,profile_route);
       }else{

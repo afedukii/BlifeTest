@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:blife_test/utils/Strings/UrlAddress.dart';
 import 'package:http/http.dart' as http;
 class RandomUser {
   var data;
@@ -16,7 +17,7 @@ class RandomUser {
   });
 
   Future<void> genRandomUser() async{
-    var response = await http.get(Uri.parse('https://randomuser.me/api/?inc=name,login,picture,phone'));
+    var response = await http.get(Uri.parse(RandomUserSpecUrl));
     var convert = jsonDecode(response.body);
     data = convert;
     name = convert['results'][0]['name']['first'] + ' ' +  convert['results'][0]['name']['last'];
